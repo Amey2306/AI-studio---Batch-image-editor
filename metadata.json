@@ -1,0 +1,5 @@
+{
+  "name": "Gemini Image Studio",
+  "description": "An all-in-one application to generate, analyze, and edit images using the power of Google's Gemini API. Upload your own images or create new ones from scratch.",
+  "requestFramePermissions": []
+}
