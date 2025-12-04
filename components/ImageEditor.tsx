@@ -270,22 +270,36 @@ const ImageEditor: React.FC = () => {
               <div className="pt-4 border-t border-slate-700">
                 <h3 className="text-lg font-semibold text-slate-300 mb-4">Batch Results</h3>
                 <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-                  {/* FIX: Use Object.keys to iterate and ensure `progress` is correctly typed, resolving 'property does not exist on type unknown' errors. */}
                   {Object.keys(batchProgress).map((indexStr) => {
                     const index = parseInt(indexStr, 10);
                     const progress = batchProgress[index];
                     return (
                       <div key={index} className="space-y-2">
-                        <div className="relative aspect-square bg-slate-700 rounded-lg overflow-hidden flex items-center justify-center">
+                        <div className="relative aspect-square bg-slate-700 rounded-lg overflow-hidden flex items-center justify-center group border border-slate-600">
                           {progress.status === 'loading' && <Spinner/>}
-                          {progress.status === 'success' && progress.result && <img src={progress.result} className="w-full h-full object-contain"/>}
+                          {progress.status === 'success' && progress.result && (
+                            <>
+                              <img src={progress.result} className="w-full h-full object-contain"/>
+                              <a 
+                                href={progress.result}
+                                download={`edited-creative-${index+1}.png`}
+                                className="absolute top-2 right-2 p-2 bg-slate-900 text-white rounded-full hover:bg-sky-600 transition-all shadow-lg border border-slate-600 z-10"
+                                title="Download"
+                                onClick={(e) => e.stopPropagation()}
+                              >
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                                </svg>
+                              </a>
+                            </>
+                          )}
                           {progress.status === 'error' && (
                             <div className="text-center p-2">
                                <p className="text-sm font-semibold text-red-400">Error</p>
                                <p className="text-xs text-red-500">{progress.error}</p>
                             </div>
                           )}
-                           <img src={uploadedImages[index].base64} alt="Original thumbnail" className="absolute bottom-1 right-1 h-8 w-8 object-cover rounded border-2 border-slate-500" />
+                           <img src={uploadedImages[index].base64} alt="Original thumbnail" className="absolute bottom-1 right-1 h-8 w-8 object-cover rounded border-2 border-slate-500 shadow-md" />
                         </div>
                       </div>
                     )
